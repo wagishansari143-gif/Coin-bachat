@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075c43">
+<title>Coin Bachat — Online Virtual Coins</title>
+<style>
+:root{--green:#087f5b;--dark:#073b2b;--mint:#dff8ec;--gold:#f6bd38;--bg:#f3f8f5;--text:#17251f;--muted:#63736b;--line:#e1ebe5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:470px;margin:auto;padding:18px 15px 32px}header{display:flex;align-items:center;gap:12px;margin:8px 0 18px}
+.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;background:var(--dark);color:var(--gold);font-size:26px}
+h1{font-size:22px;margin:0}.sub{font-size:13px;color:var(--muted);margin-top:2px}
+.notice{padding:12px 14px;background:#fff5d8;border:1px solid #f1dfa2;border-radius:14px;font-size:13px;line-height:1.45;margin-bottom:15px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 5px 18px #143a2708}
+.coinhero{background:linear-gradient(145deg,#075c43,#0c9970);color:white;border:0}.eyebrow{font-size:13px;opacity:.82}
+.balance{font-size:36px;font-weight:800;letter-spacing:-1px;margin:6px 0}.tag{display:inline-block;border-radius:99px;background:#ffffff24;padding:5px 10px;font-size:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}.stat{background:#ffffff16;border-radius:13px;padding:11px}.stat b{display:block;font-size:18px;margin-top:5px}
+h2{font-size:17px;margin:0 0 8px}label{display:block;font-size:13px;font-weight:650;margin:12px 0 6px}
+input{width:100%;padding:12px;border:1px solid #d5e2da;border-radius:11px;font-size:16px;background:white;color:var(--text)}
+button{border:0;border-radius:12px;padding:13px 12px;font-size:14px;font-weight:750;cursor:pointer}
+.primary{background:var(--green);color:white;width:100%;margin-top:13px}.soft{background:var(--mint);color:var(--dark);width:100%;margin-top:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.small{font-size:12px;color:var(--muted);line-height:1.5}.status{padding:10px;border-radius:10px;background:#f5f8f6;font-size:13px;margin-top:10px;overflow-wrap:anywhere}
+.hidden{display:none!important}.history{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #edf1ee;font-size:13px}.history:last-child{border:0}.plus{color:var(--green);font-weight:750}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">🪙</div><div><h1>Coin Bachat</h1><div class="sub">Online account • Virtual coins only</div></div></header>
+<div class="notice"><b>Sirf virtual game.</b> Coins aur interest kalpanik hain. Inki koi cash value nahi; asli payment ya withdrawal nahi hota.</div>
+
+<section class="card" id="authCard">
+<h2 id="authTitle">Login / Sign Up</h2>
+<div class="small">Naya account banayein ya apne account mein login karein. Data online Firebase database mein save hoga, setup ke baad.</div>
+<label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="aap@example.com">
+<label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Kam se kam 6 characters">
+<button class="primary" id="signupBtn">Sign Up</button>
+<button class="soft" id="loginBtn">Login</button>
+<div class="status" id="authStatus" aria-live="polite">Pehle Firebase configuration add karna zaroori hai. Setup guide README mein hai.</div>
+</section>
+
+<div id="appArea" class="hidden">
+<section class="card co inhero coinhero">
+<div class="eyebrow">Aapke total coins</div><div class="balance"><span id="coins">1000</span> 🪙</div><span class="tag">Online virtual wallet</span>
+<div class="grid"><div class="stat"><span class="eyebrow">Aaj ka interest</span><b>+<span id="daily">10</span> 🪙</b></div><div class="stat"><span class="eyebrow">Total interest mila</span><b><span id="earned">0</span> 🪙</b></div></div>
+</section>
+<section class="card">
+<h2>Coin wallet</h2><div class="small">Yeh sirf virtual coins hain.</div>
+<label for="amount">Coins ki sankhya</label><input id="amount" type="number" min="1" step="1" value="100" inputmode="numeric">
+<div class="row"><button class="primary" id="addBtn">＋ Coins add karein</button><button class="soft" id="useBtn">− Coins use karein</button></div>
+<button class="primary" id="interestBtn">✨ Aaj ka interest collect karein</button>
+<div id="gameStatus" class="status" aria-live="polite">Aapka data cloud mein save hoga.</div>
+</section>
+<section class="card">
+<h2>Interest settings</h2><label for="rate">Daily game interest</label>
+<select id="rate" style="width:100%;padding:12px;border:1px solid #d5e2da;border-radius:11px;font-size:16px"><option value="0.1">0.1% per day</option><option value="0.5">0.5% per day</option><option value="1" selected>1% per day</option><option value="2">2% per day</option></select>
+<button class="soft" id="saveRateBtn">Interest setting save karein</button>
+<p class="small">Yeh game reward rate hai, real-world interest rate nahi.</p>
+</section>
+<section class="card"><h2>Recent activity</h2><div id="history"><div class="small">Activity load ho rahi hai…</div></div>
+<button class="soft" id="logoutBtn">Logout</button></section>
+</div>
+<footer>Account data Firebase par store hota hai, jab Firebase setup aur security rules sahi tarah configure hon.</footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+// IMPORTANT: Replace these placeholder values with your own Firebase web app config.
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
+  appId: "PASTE_YOUR_FIREBASE_APP_ID"
+};
+const configured = !Object.values(firebaseConfig).some(v => String(v).includes("PASTE_YOUR"));
+const authStatus = document.getElementById('authStatus');
+const authCard = document.getElementById('authCard');
+const appArea = document.getElementById('appArea');
+let auth, db, currentUser, userData;
+const $ = id => document.getElementById(id);
+const fmt = n => Math.floor(n || 0).toLocaleString('en-IN');
+const userRef = uid => doc(db, 'users', uid);
+function say(id, text){ $(id).textContent = text; }
+function setAuthButtons(disabled){ $('signupBtn').disabled=disabled; $('loginBtn').disabled=disabled; }
+function showHistory(items=[]){
+ const el=$('history');
+ if(!items.length){el.innerHTML='<div class="small">Abhi koi activity nahi hai.</div>';return}
+ el.innerHTML=items.slice(0,8).map(x=>`<div class="history"><span>${escapeHtml(x.label||'Activity')}</span><b class="${x.delta>=0?'plus':''}">${x.delta>=0?'+':''}${fmt(x.delta)} 🪙</b></div>`).join('');
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function render(){
+ if(!userData)return;
+ $('coins').textContent=fmt(userData.coins);
+ $('earned').textContent=fmt(userData.earned);
+ $('daily').textContent=fmt(Math.max(1,Math.floor(userData.coins*Number(userData.rate||1)/100)));
+ $('rate').value=String(userData.rate||1);
+ showHistory(userData.history||[]);
+}
+async function loadOrCreateUser(user){
+ const ref=userRef(user.uid), snap=await getDoc(ref);
+ if(!snap.exists()){
+   const initial={coins:1000,earned:0,rate:1,lastCollectDay:"",history:[{label:"🎁 Shuruaati virtual coins",delta:1000}],createdAt:serverTimestamp(),updatedAt:serverTimestamp()};
+   await setDoc(ref,initial);
+   userData={...initial};
+ } else userData=snap.data();
+ render();
+}
+async function mutate(label, delta, isInterest=false){
+ if(!currentUser||!userData)return;
+ const n=Math.floor(Number($('amount').value));
+ if(!isInterest&&(!Number.isFinite(n)||n<=0)){say('gameStatus','Sahi coin number daalein.');return}
+ try{
+   const ref=userRef(currentUser.uid);
+   await runTransaction(db,async tx=>{
+     const snap=await tx.get(ref); if(!snap.exists())throw new Error('Account data nahi mila.');
+     const d=snap.data(); let change=delta;
+     let history=d.history||[];
+     if(isInterest){
+       const day=new Date().toISOString().slice(0,10);
+       if(d.lastCollectDay===day)throw new Error('Aaj ka interest pehle hi collect kiya. Kal phir aaiye!');
+       change=Math.max(1,Math.floor((d.coins||0)*Number(d.rate||1)/100));
+       history=[{label:'✨ Daily virtual interest',delta:change},...history].slice(0,8);
+       tx.update(ref,{coins:(d.coins||0)+change,earned:(d.earned||0)+change,lastCollectDay:day,history,updatedAt:serverTimestamp()});
+     } else {
+       change=Math.sign(delta)*n;
+       if(change<0&&Math.abs(change)>(d.coins||0))throw new Error('Aapke paas itne coins nahi hain.');
+       history=[{label,delta:change},...history].slice(0,8);
+       tx.update(ref,{coins:(d.coins||0)+change,history,updatedAt:serverTimestamp()});
+     }
+   });
+   userData=(await getDoc(ref)).data();render();say('gameStatus','Update ho gaya aur cloud mein save hua.');
+ }catch(e){say('gameStatus',e.message||'Save nahi hua. Dobara try karein.');}
+}
+if(!configured){
+ setAuthButtons(true);
+ authStatus.textContent='Setup zaroori hai: README mein diye gaye steps follow karke firebaseConfig ki values bhar dein. Tab login/signup aur cloud saving kaam karega.';
+}else{
+ const app=initializeApp(firebaseConfig); auth=getAuth(app); db=getFirestore(app);
+ $('signupBtn').disabled=false; $('loginBtn').disabled=false;
+ $('signupBtn').addEventListener('click',async()=>{
+   const email=$('email').value.trim(), password=$('password').value;
+   try{setAuthButtons(true);await createUserWithEmailAndPassword(auth,email,password);authStatus.textContent='Account ban gaya!';}
+   catch(e){authStatus.textContent=humanError(e.code,e.message)}finally{setAuthButtons(false)}
+ });
+ $('loginBtn').addEventListener('click',async()=>{
+   const email=$('email').value.trim(), password=$('password').value;
+   try{setAuthButtons(true);await signInWithEmailAndPassword(auth,email,password);authStatus.textContent='Login successful!';}
+   catch(e){authStatus.textContent=humanError(e.code,e.message)}finally{setAuthButtons(false)}
+ });
+ onAuthStateChanged(auth,async user=>{
+   currentUser=user;
+   if(user){authCard.classList.add('hidden');appArea.classList.remove('hidden');say('gameStatus','Cloud data load ho raha hai…');try{await loadOrCreateUser(user);say('gameStatus','Aapka account online hai.');}catch(e){say('gameStatus','Data load nahi hua. Firebase setup/rules check karein.');}}
+   else{authCard.classList.remove('hidden');appArea.classList.add('hidden');}
+ });
+ $('addBtn').addEventListener('click',()=>mutate('🎁 Demo coins add kiye',1));
+ $('useBtn').addEventListener('click',()=>mutate('🛍️ Demo coins use kiye',-1));
+ $('interestBtn').addEventListener('click',()=>mutate('✨ Daily virtual interest',0,true));
+ $('saveRateBtn').addEventListener('click',async()=>{
+   if(!currentUser||!userData)return;
+   const rate=Number($('rate').value);
+   try{await updateDoc(userRef(currentUser.uid),{rate,updatedAt:serverTimestamp()});userData.rate=rate;render();say('gameStatus','Game interest setting cloud mein save ho gayi.');}
+   catch(e){say('gameStatus','Setting save nahi hui. Dobara try karein.');}
+ });
+ $('logoutBtn').addEventListener('click',()=>signOut(auth));
+}
+function humanError(code,message){
+ const map={'auth/invalid-email':'Email address sahi nahi hai.','auth/missing-password':'Password daalein.','auth/weak-password':'Password kam se kam 6 characters ka rakhein.','auth/email-already-in-use':'Is email ka account pehle se hai. Login karein.','auth/invalid-credential':'Email ya password galat hai.','auth/network-request-failed':'Internet connection check karein.'};
+ return map[code]||message||'Kuch galat hua. Dobara try karein.';
+}
+</script>
+</body></html>
