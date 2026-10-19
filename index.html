@@ -71,12 +71,13 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, runTransaction, serverTim
 
 // IMPORTANT: Replace these placeholder values with your own Firebase web app config.
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_FIREBASE_API_KEY",
-  authDomain: "PASTE_YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
-  appId: "PASTE_YOUR_FIREBASE_APP_ID"
+  const firebaseConfig = {
+  apiKey: "AIzaSyDh5LRDaiV3-SSMvHfMMt49tBe-wMq3CDE",
+  authDomain: "coin-bachat.firebaseapp.com",
+  projectId: "coin-bachat",
+  storageBucket: "coin-bachat.firebasestorage.app",
+  messagingSenderId: "962750178517",
+  appId: "1:962750178517:web:e719c756e6dc6415c96e5c"
 };
 const configured = !Object.values(firebaseConfig).some(v => String(v).includes("PASTE_YOUR"));
 const authStatus = document.getElementById('authStatus');
